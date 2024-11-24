@@ -12,7 +12,21 @@ function PactForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copySuccess, setCopySuccess] = useState('');
   const [generatedEmail, setGeneratedEmail] = useState('');
+
+  const copyToClipboard = async () => {
+    try {
+      // Remove HTML line breaks before copying
+      const plainText = generatedEmail.replace(/<br>/g, '\n');
+      await navigator.clipboard.writeText(plainText);
+      setCopySuccess('Copied!');
+      // Reset success message after 2 seconds
+      setTimeout(() => setCopySuccess(''), 2000);
+    } catch (err) {
+      setError('Failed to copy to clipboard');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +55,28 @@ function PactForm() {
       setError('Failed to generate email');
     } finally {
       setIsLoading(false);
+    }
+  };
+  const insertToGmail = async () => {
+    if (!generatedEmail) return;
+    
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      
+      if (!tab.url.includes('mail.google.com')) {
+        setError('Please open Gmail compose window first');
+        return;
+      }
+
+      await chrome.tabs.sendMessage(tab.id, {
+        action: "insertEmail",
+        email: generatedEmail
+      });
+
+      // Close popup after successful insertion
+      window.close();
+    } catch (err) {
+      setError('Failed to insert email into Gmail');
     }
   };
 
@@ -102,13 +138,33 @@ function PactForm() {
         <Button
           type="submit"
           variant="primary"
-          className="w-100"
+          className="w-100 mb-2"
           disabled={isLoading}
         >
           {isLoading ? 'Generating...' : 'Generate Email'}
         </Button>
 
+        {generatedEmail && (
+          <div className="d-grid gap-2">
+            <Button
+              variant="success"
+              className="mt-2"
+              onClick={insertToGmail}
+            >
+              Insert to Gmail
+            </Button>
+            <Button
+              variant="secondary"
+              className="mt-2"
+              onClick={copyToClipboard}
+            >
+              {copySuccess || 'Copy to Clipboard'}
+            </Button>
+          </div>
+        )}
+
         {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+        {copySuccess && <Alert variant="success" className="mt-3">{copySuccess}</Alert>}
 
         {generatedEmail && (
           <div className="mt-3">
