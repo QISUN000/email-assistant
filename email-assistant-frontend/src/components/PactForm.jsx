@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 
 function PactForm() {
@@ -27,6 +27,18 @@ function PactForm() {
       setError('Failed to copy to clipboard');
     }
   };
+  useEffect(() => {
+    chrome.storage.local.get('formData', (result) => {
+      if (result.formData) {
+        setFormData(result.formData);
+      }
+    });
+  }, []);
+
+ 
+  useEffect(() => {
+    chrome.storage.local.set({ formData });
+  }, [formData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,10 +71,10 @@ function PactForm() {
   };
   const insertToGmail = async () => {
     if (!generatedEmail) return;
-    
+
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      
+
       if (!tab.url.includes('mail.google.com')) {
         setError('Please open Gmail compose window first');
         return;
