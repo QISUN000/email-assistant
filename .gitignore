@@ -1,2 +1,15 @@
 
 email-assistant-backend/.env
+email-assistant-backend/venv
+/email-assistant-backend/venv
+/email-assistant-backend/__pycache__
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
