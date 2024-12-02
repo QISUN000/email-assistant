@@ -19,7 +19,13 @@ email_service = EmailService()
 
 @app.post("/generate-email", response_model=EmailResponseModel)
 async def generate_email(request: EmailRequestModel):
-    return await email_service.generate_email(request)
+    try:
+        response = await email_service.generate_email(request)
+        if not response.success:
+            raise HTTPException(status_code=500, detail=response.error)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/health")

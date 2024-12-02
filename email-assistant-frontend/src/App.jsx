@@ -1,14 +1,14 @@
-import PactForm from './components/PactForm';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
+import AIInput from './components/EmailAssistant/AIInput';
+import Settings from './components/Settings/Settings';
+import './App.css';
 
 function App() {
-
   return (
     <>
-     <PactForm />
+      <AIInput />
+      <Settings />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -3,33 +3,19 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 
-class ToneEnum(str, Enum):
-    FRIENDLY = "😊 Friendly"
-    FORMAL = "📱 Formal"
-    INFORMAL = "😎 Informal"
-    FUNNY = "😄 Funny"
-    INTERESTED = "🤔 Interested"
-    NOT_INTERESTED = "😒 Not Interested"
-    EXCITED = "😃 Excited"
-    THANKFUL = "🙏 Thankful"
-    ANGRY = "😠 Angry"
-    SURPRISED = "😮 Surprised"
-
-
-class ResponseLengthEnum(str, Enum):
-    SHORT = "Short"
-    MEDIUM = "Medium"
-    LONG = "long"
-
-
 class EmailRequestModel(BaseModel):
+    """Request model for email generation"""
+
     prompt: str
-    tone: ToneEnum
-    response_length: ResponseLengthEnum
+    tone: str
+    response_length: str
+    max_tokens: int
     custom_instructions: List[str] = []
 
 
 class EmailResponseModel(BaseModel):
+    """Response model for generated email"""
+
     email: str
     success: bool
     error: Optional[str] = None

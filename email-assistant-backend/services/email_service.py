@@ -1,23 +1,17 @@
 from anthropic import Anthropic
-from models import EmailRequestModel, EmailResponseModel, ResponseLengthEnum
+from models import EmailRequestModel, EmailResponseModel
 from config import get_settings
 
 
 class EmailService:
+    """Service for handling email generation using Anthropic's Claude"""
 
     def __init__(self):
         self._settings = get_settings()
         self._client = Anthropic(api_key=self._settings.ANTHROPIC_API_KEY)
 
-    def _get_token_limit(self, length: ResponseLengthEnum) -> int:
-        if length == ResponseLengthEnum.SHORT:
-            return self._settings.SHORT_TOKEN_LIMIT
-        elif length == length == ResponseLengthEnum.MEDIUM:
-            return self._settings.MEDIUM_TOKEN_LIMIT
-        return self._settings.LONG_TOKEN_LIMIT
-
     def _create_prompt(self, request: EmailRequestModel) -> str:
-        token_limit = self._get_token_limit(request.response_length)
+        """Create prompt for email generation"""
         custom_instructions = (
             "\n- ".join(request.custom_instructions)
             if request.custom_instructions
@@ -26,8 +20,7 @@ class EmailService:
 
         return f"""You are an expert email writer. Generate a professional email following these exact requirements:
         - do best you can extracting Purpose, Audience, key points and Context from  {request.prompt}
-        - Tone: {request.tone.value}   
-        - Length: approximately {token_limit} tokens 
+        - Tone: {request.tone}   
         Guidelines:
         1. Start with an appropriate greeting based on the audience and tone
         2. First paragraph should establish context and purpose clearly
@@ -44,11 +37,12 @@ class EmailService:
         """
 
     async def generate_email(self, request: EmailRequestModel) -> EmailResponseModel:
+        """Generate email based on request parameters"""
         try:
             response = self._client.messages.create(
                 model=self._settings.MODEL_NAME,
                 messages=[{"role": "user", "content": self._create_prompt(request)}],
-                max_tokens=self._get_token_limit(request.response_length),
+                max_tokens=request.max_tokens,
             )
 
             return EmailResponseModel(email=response.content[0].text, success=True)
