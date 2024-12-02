@@ -18,6 +18,11 @@ class EmailService:
 
     def _create_prompt(self, request: EmailRequestModel) -> str:
         token_limit = self._get_token_limit(request.response_length)
+        custom_instructions = (
+            "\n- ".join(request.custom_instructions)
+            if request.custom_instructions
+            else "None"
+        )
 
         return f"""You are an expert email writer. Generate a professional email following these exact requirements:
         - do best you can extracting Purpose, Audience, key points and Context from  {request.prompt}
@@ -32,6 +37,8 @@ class EmailService:
         6. Keep the email concise and professional
         7. Match the tone exactly as specified
         8. Use appropriate transitions between paragraphs
+         Custom Instructions:
+        - {custom_instructions}
 
         Format the email properly with paragraphs and spacing. Return ONLY the email content without explanations or meta-commentary.
         """

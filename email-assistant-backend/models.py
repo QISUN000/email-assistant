@@ -1,6 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class ToneEnum(str, Enum):
@@ -26,6 +26,7 @@ class EmailRequestModel(BaseModel):
     prompt: str
     tone: ToneEnum
     response_length: ResponseLengthEnum
+    custom_instructions: List[str] = []
 
 
 class EmailResponseModel(BaseModel):
