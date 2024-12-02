@@ -3,6 +3,10 @@
   "name": "AI Email Assistant",
   "version": "1.0.0",
   "description": "Generate professional emails using AI",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals"
+  },
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -17,17 +21,13 @@
     "storage"
   ],
   "host_permissions": [
-    "https://mail.google.com/*"
+    "https://mail.google.com/*",
+    "https://contacts.google.com/*"
   ],
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
       "js": ["content.js"]
     }
-  ],
-  "icons": {
-    "16": "/icons/icon16.png",
-    "48": "/icons/icon48.png",
-    "128": "/icons/icon128.png"
-  }
+  ]
 }

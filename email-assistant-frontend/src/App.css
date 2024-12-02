@@ -146,14 +146,30 @@
 
 /* Custom Instructions Button */
 .custom-instructions-btn {
-  color: #1a73e8;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  text-decoration: underline;
+  color: #1a73e8; /* Keep the blue color */
+  background-color: #f1f5fb; /* Light blue background */
+  border: 1px solid transparent; /* Smooth border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 8px 12px; /* Add padding */
+  font-family: Arial, sans-serif; /* Simple font style */
+  font-size: 14px; /* Readable font size */
+  cursor: pointer; /* Show pointer on hover */
+  text-decoration: none; /* Remove underline */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
 }
 
+.custom-instructions-btn:hover {
+  background-color: #e4e8ef; /* Slightly darker hover effect */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+}
+
+.custom-instructions-btn:active {
+  background-color: #d8e0ec; /* Darker pressed state */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inset shadow when clicked */
+}
+
+/* CustomInstructions popup styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -171,9 +187,71 @@
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 400px;
-  max-width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+  width: 400px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.popup-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.instructions-list {
+  margin: 24px 0;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.instruction-item input[type="checkbox"] {
+  margin-right: 12px;
+}
+
+.instruction-item button {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.add-instruction {
+  margin-top: 24px;
+  display: flex;
+  gap: 8px;
+}
+
+.add-instruction input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-instruction button {
+  padding: 8px 16px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.note {
+  margin-top: 16px;
+  color: #666;
+  font-size: 12px;
 }

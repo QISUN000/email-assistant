@@ -42,7 +42,7 @@ const CustomInstructions = ({ onClose }) => {
         <button onClick={onClose}>×</button>
       </div>
       
-      <p>Personalize your generated emails by giving it custom instructions. Addy will try to remember these instructions when generating email content.</p>
+      <p>Personalize your generated emails by giving it custom instructions. It will try to remember these instructions when generating email content.</p>
 
       <div className="instructions-list">
         {instructions.map(instruction => (
